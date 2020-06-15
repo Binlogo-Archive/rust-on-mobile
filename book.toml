@@ -1,0 +1,10 @@
+[book]
+authors = ["王兴彬_Binboy"]
+language = "zh-CN"
+multilingual = false
+src = "src"
+title = "Rust on Mobile - Rust 跨平台移动客户端开发实践"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
