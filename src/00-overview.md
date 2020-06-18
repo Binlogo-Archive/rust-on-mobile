@@ -2,6 +2,135 @@
 
 ## 代码初见
 
+通过`Show me the code`快速直观地认识下 Rust 代码
+
+Tips: [Playground](https://play.rust-lang.org) & [mdBook](https://github.com/rust-lang/mdBook)
+
+### Hello, World
+
+```rust
+fn hello() -> &'static str {
+    "Hello, World!"
+}
+println!("{}", hello());
+```
+
+- `'static`用来标记生命周期
+
+### 翻转字符串
+
+```rust
+pub fn reverse(input: &str) -> String {
+    input.chars().filter(|c| !c.is_whitespace()).rev().collect()
+}
+let s = "a1b2cdefg";
+println!("{}", reverse(&s));
+```
+
+- 代码抽象程度高，表达能力足够强，且无运行时消耗（[零成本抽象](#零成本抽象)）
+- 高阶函数支持
+
+### 表示时间
+
+```rust
+use std::fmt;
+
+#[derive(Debug, PartialEq)]
+pub struct Clock {
+    hours: i32,
+    minutes: i32,
+}
+const HOURS_PER_DAY: i32 = 24;
+const MINUTES_PER_HOUR: i32 = 60;
+const MINUTES_PER_DAY: i32 = MINUTES_PER_HOUR * HOURS_PER_DAY;
+
+impl Clock {
+    pub fn new(hours: i32, minutes: i32) -> Self {
+        let total_minutes = total_minutes(hours, minutes);
+        let hours = total_minutes / MINUTES_PER_HOUR;
+        let minutes = total_minutes % MINUTES_PER_HOUR;
+        Self { hours, minutes }
+    }
+
+    pub fn add_minutes(&self, minutes: i32) -> Self {
+        Self::new(self.hours, self.minutes + minutes)
+    }
+}
+
+impl fmt::Display for Clock {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:02}:{:02}", self.hours, self.minutes)
+    }
+}
+
+fn total_minutes(hours: i32, minutes: i32) -> i32 {
+    let total_minutes = (hours * MINUTES_PER_HOUR + minutes) % MINUTES_PER_DAY;
+    if total_minutes >= 0 {
+        total_minutes
+    } else {
+        total_minutes + MINUTES_PER_DAY
+    }
+}
+
+#[test]
+fn test_on_the_hour() {
+    assert_eq!(Clock::new(8, 0).to_string(), "08:00");
+}
+
+#[test]
+fn test_midnight_is_zero_hours() {
+    assert_eq!(Clock::new(24, 0).to_string(), "00:00");
+}
+
+#[test]
+fn test_add_across_midnight() {
+    let clock = Clock::new(23, 59).add_minutes(2);
+    assert_eq!(clock.to_string(), "00:01");
+}
+```
+
+- `derive` 宏
+- `cargo test`可快速进行运行测试
+
+### TCP 的简单应用
+
+Server:
+
+```rust
+use std::io::{self, Read, Write};
+use std::net::{TcpListener, TcpStream};
+use std::thread;
+
+fn main() -> io::Result<()> {
+    let tcp_listener = TcpListener::bind("127.0.0.1:8080")?;
+    let mut thread_vec: Vec<thread::JoinHandle<()>> = vec![];
+    for stream in tcp_listener.incoming() {
+        let stream = stream.expect("failed");
+        let handle = thread::spawn(|| {
+            handle_client(stream).unwrap_or_else(|e| eprintln!("{:?}", e));
+        });
+        thread_vec.push(handle);
+    }
+
+    Ok(())
+}
+
+fn handle_client(mut stream: TcpStream) -> io::Result<()> {
+    let mut buf = [0; 512];
+    loop {
+        let bytes_read = stream.read(&mut buf)?;
+        if bytes_read == 0 {
+            return Ok(());
+        }
+        let str = String::from_utf8(buf.to_vec());
+        println!("{:?}", str.unwrap());
+        stream.write(&buf[..bytes_read])?;
+    }
+}
+```
+
+Client
+
 ```rust
 use std::io::{self, prelude::*, BufReader};
 use std::net::TcpStream;
@@ -24,8 +153,6 @@ fn main() -> io::Result<()> {
 }
 ```
 
-Playground: https://play.rust-lang.org
-
 ## 简史
 
 - 开发历史近 10 年，1.0 正式发布 5 年
@@ -43,17 +170,17 @@ Rust 是现代化的年轻编程语言，语言特性上都借鉴了很多不同
 
 ### 安全
 
-* 类型系统
+- 类型系统
 
-  * 编译器检查，暴露隐含错误
-  * 编译器获取更多信息，利于优化
-  * 增强可读性，代码表达性强
+  - 编译器检查，暴露隐含错误
+  - 编译器获取更多信息，利于优化
+  - 增强可读性，代码表达性强
 
-* 所有权系统
+- 所有权系统
 
   > 每个被分配的内存都有一个独占其所有权的指针
 
-* 借用和生命周期
+- 借用和生命周期
 
   > 每个变量都有其生命周期，借用可通过标记生命周期供编译检查
 
@@ -102,17 +229,10 @@ impl_times!(usize);
 
 ### 实用性
 
-* 友好的 FFI 支持，可以很好利用已有 C/C++ 等生态
-* 包管理器 Cargo 及其一致的工作流
-* 强大智能的编译器错误提示机制
+- 友好的 FFI 支持，可以很好利用已有 C/C++ 等生态
+- 包管理器 Cargo 及其一致的工作流
+- 强大智能的编译器错误提示机制
 
 > 学习 Rust 并把编译器当做「导师」，能帮助自己考虑更多可能的隐含问题，而不是「一把梭」。
 
 ## 跨平台特性
-
-
-
-
-
-
-
