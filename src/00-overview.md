@@ -89,7 +89,24 @@ fn test_add_across_midnight() {
 }
 ```
 
-- `derive` 宏
+- `derive` 运用宏
+
+  ```rust
+  impl<T: PartialEq> PartialEq for Clock {
+    fn eq(&self, other: &Clock) -> bool {
+        self.a == other.a && self.b == other.b
+    }
+
+    fn ne(&self, other: &Clock) -> bool {
+        self.a != other.a || self.b != other.b
+    }
+  }
+  ```
+
+- `traits` 特性
+
+- `structs` 结构体
+
 - `cargo test`可快速进行运行测试
 
 ### TCP 的简单应用
@@ -105,7 +122,7 @@ fn main() -> io::Result<()> {
     let tcp_listener = TcpListener::bind("127.0.0.1:8080")?;
     let mut thread_vec: Vec<thread::JoinHandle<()>> = vec![];
     for stream in tcp_listener.incoming() {
-        let stream = stream.expect("failed");
+        let stream = stream.expect("failed"); // Variable shadowing
         let handle = thread::spawn(|| {
             handle_client(stream).unwrap_or_else(|e| eprintln!("{:?}", e));
         });
@@ -152,6 +169,11 @@ fn main() -> io::Result<()> {
     }
 }
 ```
+
+- TCP 网络编程，系统级编程语言
+- 默认不可变，可变量须显示声明
+- Variable shadowing
+- 可恢复的错误传递`?`
 
 ## 简史
 
@@ -236,3 +258,5 @@ impl_times!(usize);
 > 学习 Rust 并把编译器当做「导师」，能帮助自己考虑更多可能的隐含问题，而不是「一把梭」。
 
 ## 跨平台特性
+
+// TODO
