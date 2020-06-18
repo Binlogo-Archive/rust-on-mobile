@@ -240,8 +240,32 @@ fn test_add_across_midnight() {
 <span class="boring">}
 </span></code></pre></pre>
 <ul>
-<li><code>derive</code> 宏</li>
-<li><code>cargo test</code>可快速进行运行测试</li>
+<li>
+<p><code>derive</code> 运用宏</p>
+<pre><pre class="playpen"><code class="language-rust">
+<span class="boring">#![allow(unused_variables)]
+</span><span class="boring">fn main() {
+</span>impl&lt;T: PartialEq&gt; PartialEq for Clock {
+  fn eq(&amp;self, other: &amp;Clock) -&gt; bool {
+      self.a == other.a &amp;&amp; self.b == other.b
+  }
+
+  fn ne(&amp;self, other: &amp;Clock) -&gt; bool {
+      self.a != other.a || self.b != other.b
+  }
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p><code>traits</code> 特性</p>
+</li>
+<li>
+<p><code>structs</code> 结构体</p>
+</li>
+<li>
+<p><code>cargo test</code>可快速进行运行测试</p>
+</li>
 </ul>
 <h3><a class="header" href="#tcp-的简单应用" id="tcp-的简单应用">TCP 的简单应用</a></h3>
 <p>Server:</p>
@@ -253,7 +277,7 @@ fn main() -&gt; io::Result&lt;()&gt; {
     let tcp_listener = TcpListener::bind(&quot;127.0.0.1:8080&quot;)?;
     let mut thread_vec: Vec&lt;thread::JoinHandle&lt;()&gt;&gt; = vec![];
     for stream in tcp_listener.incoming() {
-        let stream = stream.expect(&quot;failed&quot;);
+        let stream = stream.expect(&quot;failed&quot;); // Variable shadowing
         let handle = thread::spawn(|| {
             handle_client(stream).unwrap_or_else(|e| eprintln!(&quot;{:?}&quot;, e));
         });
@@ -297,6 +321,12 @@ fn main() -&gt; io::Result&lt;()&gt; {
     }
 }
 </code></pre></pre>
+<ul>
+<li>TCP 网络编程，系统级编程语言</li>
+<li>默认不可变，可变量须显示声明</li>
+<li>Variable shadowing</li>
+<li>可恢复的错误传递<code>?</code></li>
+</ul>
 <h2><a class="header" href="#简史" id="简史">简史</a></h2>
 <ul>
 <li>开发历史近 10 年，1.0 正式发布 5 年</li>
@@ -383,6 +413,7 @@ impl_times!(usize);
 <p>学习 Rust 并把编译器当做「导师」，能帮助自己考虑更多可能的隐含问题，而不是「一把梭」。</p>
 </blockquote>
 <h2><a class="header" href="#跨平台特性" id="跨平台特性">跨平台特性</a></h2>
+<p>// TODO</p>
 
                     </main>
 
