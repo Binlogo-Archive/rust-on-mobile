@@ -149,6 +149,134 @@
                     <main>
                         <h1><a class="header" href="#rust-概览" id="rust-概览">Rust 概览</a></h1>
 <h2><a class="header" href="#代码初见" id="代码初见">代码初见</a></h2>
+<p>通过<code>Show me the code</code>快速直观地认识下 Rust 代码</p>
+<p>Tips: <a href="https://play.rust-lang.org">Playground</a> &amp; <a href="https://github.com/rust-lang/mdBook">mdBook</a></p>
+<h3><a class="header" href="#hello-world" id="hello-world">Hello, World</a></h3>
+<pre><pre class="playpen"><code class="language-rust">
+<span class="boring">#![allow(unused_variables)]
+</span><span class="boring">fn main() {
+</span>fn hello() -&gt; &amp;'static str {
+    &quot;Hello, World!&quot;
+}
+println!(&quot;{}&quot;, hello());
+<span class="boring">}
+</span></code></pre></pre>
+<ul>
+<li><code>'static</code>用来标记生命周期</li>
+</ul>
+<h3><a class="header" href="#翻转字符串" id="翻转字符串">翻转字符串</a></h3>
+<pre><pre class="playpen"><code class="language-rust">
+<span class="boring">#![allow(unused_variables)]
+</span><span class="boring">fn main() {
+</span>pub fn reverse(input: &amp;str) -&gt; String {
+    input.chars().filter(|c| !c.is_whitespace()).rev().collect()
+}
+let s = &quot;a1b2cdefg&quot;;
+println!(&quot;{}&quot;, reverse(&amp;s));
+<span class="boring">}
+</span></code></pre></pre>
+<ul>
+<li>代码抽象程度高，表达能力足够强，且无运行时消耗（<a href="#%E9%9B%B6%E6%88%90%E6%9C%AC%E6%8A%BD%E8%B1%A1">零成本抽象</a>）</li>
+<li>高阶函数支持</li>
+</ul>
+<h3><a class="header" href="#表示时间" id="表示时间">表示时间</a></h3>
+<pre><pre class="playpen"><code class="language-rust">
+<span class="boring">#![allow(unused_variables)]
+</span><span class="boring">fn main() {
+</span>use std::fmt;
+
+#[derive(Debug, PartialEq)]
+pub struct Clock {
+    hours: i32,
+    minutes: i32,
+}
+const HOURS_PER_DAY: i32 = 24;
+const MINUTES_PER_HOUR: i32 = 60;
+const MINUTES_PER_DAY: i32 = MINUTES_PER_HOUR * HOURS_PER_DAY;
+
+impl Clock {
+    pub fn new(hours: i32, minutes: i32) -&gt; Self {
+        let total_minutes = total_minutes(hours, minutes);
+        let hours = total_minutes / MINUTES_PER_HOUR;
+        let minutes = total_minutes % MINUTES_PER_HOUR;
+        Self { hours, minutes }
+    }
+
+    pub fn add_minutes(&amp;self, minutes: i32) -&gt; Self {
+        Self::new(self.hours, self.minutes + minutes)
+    }
+}
+
+impl fmt::Display for Clock {
+    fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
+        write!(f, &quot;{:02}:{:02}&quot;, self.hours, self.minutes)
+    }
+}
+
+fn total_minutes(hours: i32, minutes: i32) -&gt; i32 {
+    let total_minutes = (hours * MINUTES_PER_HOUR + minutes) % MINUTES_PER_DAY;
+    if total_minutes &gt;= 0 {
+        total_minutes
+    } else {
+        total_minutes + MINUTES_PER_DAY
+    }
+}
+
+#[test]
+fn test_on_the_hour() {
+    assert_eq!(Clock::new(8, 0).to_string(), &quot;08:00&quot;);
+}
+
+#[test]
+fn test_midnight_is_zero_hours() {
+    assert_eq!(Clock::new(24, 0).to_string(), &quot;00:00&quot;);
+}
+
+#[test]
+fn test_add_across_midnight() {
+    let clock = Clock::new(23, 59).add_minutes(2);
+    assert_eq!(clock.to_string(), &quot;00:01&quot;);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<ul>
+<li><code>derive</code> 宏</li>
+<li><code>cargo test</code>可快速进行运行测试</li>
+</ul>
+<h3><a class="header" href="#tcp-的简单应用" id="tcp-的简单应用">TCP 的简单应用</a></h3>
+<p>Server:</p>
+<pre><pre class="playpen"><code class="language-rust">use std::io::{self, Read, Write};
+use std::net::{TcpListener, TcpStream};
+use std::thread;
+
+fn main() -&gt; io::Result&lt;()&gt; {
+    let tcp_listener = TcpListener::bind(&quot;127.0.0.1:8080&quot;)?;
+    let mut thread_vec: Vec&lt;thread::JoinHandle&lt;()&gt;&gt; = vec![];
+    for stream in tcp_listener.incoming() {
+        let stream = stream.expect(&quot;failed&quot;);
+        let handle = thread::spawn(|| {
+            handle_client(stream).unwrap_or_else(|e| eprintln!(&quot;{:?}&quot;, e));
+        });
+        thread_vec.push(handle);
+    }
+
+    Ok(())
+}
+
+fn handle_client(mut stream: TcpStream) -&gt; io::Result&lt;()&gt; {
+    let mut buf = [0; 512];
+    loop {
+        let bytes_read = stream.read(&amp;mut buf)?;
+        if bytes_read == 0 {
+            return Ok(());
+        }
+        let str = String::from_utf8(buf.to_vec());
+        println!(&quot;{:?}&quot;, str.unwrap());
+        stream.write(&amp;buf[..bytes_read])?;
+    }
+}
+</code></pre></pre>
+<p>Client</p>
 <pre><pre class="playpen"><code class="language-rust">use std::io::{self, prelude::*, BufReader};
 use std::net::TcpStream;
 use std::str;
@@ -169,7 +297,6 @@ fn main() -&gt; io::Result&lt;()&gt; {
     }
 }
 </code></pre></pre>
-<p>Playground: https://play.rust-lang.org</p>
 <h2><a class="header" href="#简史" id="简史">简史</a></h2>
 <ul>
 <li>开发历史近 10 年，1.0 正式发布 5 年</li>
