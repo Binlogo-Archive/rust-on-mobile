@@ -1,0 +1,319 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rust 概览 - Rust on Mobile - Rust 跨平台移动客户端开发实践</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="00-overview.html"><strong aria-hidden="true">1.</strong> Rust 概览</a></li><li class="chapter-item expanded "><a href="01-setup.html"><strong aria-hidden="true">2.</strong> 针对移动跨平台的环境配置</a></li><li class="chapter-item expanded "><a href="02-ferris-says-hi.html"><strong aria-hidden="true">3.</strong> Rustacean 的好朋友小螃蟹说</a></li><li class="chapter-item expanded "><a href="03-cross-compiling.html"><strong aria-hidden="true">4.</strong> 跨平台编译</a></li><li class="chapter-item expanded "><a href="04-generating-headers.html"><strong aria-hidden="true">5.</strong> 自动生成头文件</a></li><li class="chapter-item expanded "><a href="05-primitives-structs-enums.html"><strong aria-hidden="true">6.</strong> 交互：基本类型、结构体与枚举</a></li><li class="chapter-item expanded "><a href="06-strings-memory.html"><strong aria-hidden="true">7.</strong> 交互：字符串与内存管理</a></li><li class="chapter-item expanded "><a href="07-threads-callbacks.html"><strong aria-hidden="true">8.</strong> 交互：多线程与方法回调</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Rust on Mobile - Rust 跨平台移动客户端开发实践</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#rust-概览" id="rust-概览">Rust 概览</a></h1>
+<h2><a class="header" href="#代码初见" id="代码初见">代码初见</a></h2>
+<pre><pre class="playpen"><code class="language-rust">use std::io::{self, prelude::*, BufReader};
+use std::net::TcpStream;
+use std::str;
+
+fn main() -&gt; io::Result&lt;()&gt; {
+    let mut tcp_stream = TcpStream::connect(&quot;127.0.0.1:8080&quot;)?;
+    loop {
+        let mut input = String::new();
+        io::stdin().read_line(&amp;mut input)?;
+        tcp_stream.write(input.as_bytes())?;
+
+        let mut buf_reader = BufReader::new(&amp;tcp_stream);
+        let mut buf: Vec&lt;u8&gt; = Vec::new();
+        buf_reader.read_until(b'\n', &amp;mut buf).expect(&quot;failed&quot;);
+
+        let string = str::from_utf8(&amp;buf).unwrap();
+        println!(&quot;{}&quot;, string);
+    }
+}
+</code></pre></pre>
+<p>Playground: https://play.rust-lang.org</p>
+<h2><a class="header" href="#简史" id="简史">简史</a></h2>
+<ul>
+<li>开发历史近 10 年，1.0 正式发布 5 年</li>
+<li>起初是 Graydon 的编程语言实验项目</li>
+<li>由 Mozilla 赞助主导，社区驱动</li>
+</ul>
+<p>Rust 是现代化的年轻编程语言，语言特性上都借鉴了很多不同语言的优点。诞生于 Mozilla，2006 年 Graydon Hoare 开始开发， 2015 年发布的 1.0 版本，前不久过了个 <a href="https://twitter.com/rustlang/status/1261253754969640960">5 岁生日</a>。Mozilla 开源背景和历史，以及在社区上的经验和积累是非常丰富的，因此 Rust 从最初就由良好的开源社区驱动，目标是成为安全可靠且高性能的系统级编程语言。既然是系统级语言，则对标的是 C 和 C++，无运行时和垃圾回收，确保性能的同时，能够方便地进行跨平台和嵌入式开发。</p>
+<h2><a class="header" href="#目标与设计哲学" id="目标与设计哲学">目标与设计哲学</a></h2>
+<ul>
+<li><strong>实用</strong>的系统级编程语言</li>
+<li>同时追求<strong>安全</strong>、<strong>并发</strong>、<strong>高性能</strong></li>
+<li>显式高于隐式</li>
+<li>运行时行为可预测</li>
+</ul>
+<h3><a class="header" href="#安全" id="安全">安全</a></h3>
+<ul>
+<li>
+<p>类型系统</p>
+<ul>
+<li>编译器检查，暴露隐含错误</li>
+<li>编译器获取更多信息，利于优化</li>
+<li>增强可读性，代码表达性强</li>
+</ul>
+</li>
+<li>
+<p>所有权系统</p>
+<blockquote>
+<p>每个被分配的内存都有一个独占其所有权的指针</p>
+</blockquote>
+</li>
+<li>
+<p>借用和生命周期</p>
+<blockquote>
+<p>每个变量都有其生命周期，借用可通过标记生命周期供编译检查</p>
+</blockquote>
+</li>
+</ul>
+<h3><a class="header" href="#零成本抽象" id="零成本抽象">零成本抽象</a></h3>
+<pre><code class="language-ruby">// Ruby
+6.times { put &quot;6&quot; }
+</code></pre>
+<pre><pre class="playpen"><code class="language-rust">// Rust
+fn main() {
+    6.times(|_| println!(&quot;6&quot;));
+}
+
+pub trait Times where Self: Sized {
+    fn times&lt;F: FnMut(Self)&gt;(&amp;self, closure: F);
+}
+
+macro_rules! impl_times {
+    ($ptype:ty) =&gt; {
+        impl Times for $ptype {
+            fn times&lt;F: FnMut($ptype)&gt;(&amp;self, mut closure: F) {
+                for i in 0..*self {
+                    closure(i)
+                }
+            }
+        }
+    }
+}
+
+impl_times!(i8);
+impl_times!(u8);
+impl_times!(i16);
+impl_times!(u16);
+impl_times!(i32);
+impl_times!(u32);
+impl_times!(i64);
+impl_times!(u64);
+impl_times!(usize);
+</code></pre></pre>
+<ul>
+<li>不存在运行时性能开销，编译时完成。</li>
+<li>零成本抽象基石：泛型和 trait</li>
+</ul>
+<h3><a class="header" href="#实用性" id="实用性">实用性</a></h3>
+<ul>
+<li>友好的 FFI 支持，可以很好利用已有 C/C++ 等生态</li>
+<li>包管理器 Cargo 及其一致的工作流</li>
+<li>强大智能的编译器错误提示机制</li>
+</ul>
+<blockquote>
+<p>学习 Rust 并把编译器当做「导师」，能帮助自己考虑更多可能的隐含问题，而不是「一把梭」。</p>
+</blockquote>
+<h2><a class="header" href="#跨平台特性" id="跨平台特性">跨平台特性</a></h2>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+                            <a rel="next" href="01-setup.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+                    <a rel="next" href="01-setup.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
