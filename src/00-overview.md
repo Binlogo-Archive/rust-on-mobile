@@ -9,13 +9,19 @@ Tips: [Playground](https://play.rust-lang.org) & [mdBook](https://github.com/rus
 ### Hello, World
 
 ```rust
-fn hello() -> &'static str {
-    "Hello, World!"
+fn hello(name: Option<&str>) {
+    match name {
+        Some(name) => println!("Hello, {}!", name),
+        None => println!("Hello, World!"),
+    }
 }
-println!("{}", hello());
+
+hello(None);
+hello(Some("Binlogo"));
 ```
 
-- `'static`用来标记生命周期
+- 无 `null` 和 `void *` 等类型
+- `Option` 枚举标识值的可空，编译器检查，避免运行时错误
 
 ### 翻转字符串
 
@@ -23,7 +29,7 @@ println!("{}", hello());
 pub fn reverse(input: &str) -> String {
     input.chars().filter(|c| !c.is_whitespace()).rev().collect()
 }
-let s = "a1b2cdefg";
+let s = "a1  b2  cdefg";
 println!("{}", reverse(&s));
 ```
 
@@ -259,4 +265,15 @@ impl_times!(usize);
 
 ## 跨平台特性
 
-// TODO
+目前跨平台的编程语言以 C++ 为主，例如较为主流的 Facebook 的跨平台布局框架 Yoga，腾讯微信的跨平台网络库 mars。而 Rust 是一门对 FFI 良好支持的系统级语言，既能够和 Swift/Kotlin 等平台支持语言一样有良好的抽象和表达性，又能够达到 C/C++ 的性能的同时，还可以在编译期保证安全。因此，如果不是像腾讯一样有着大量 C++ 开发人员，又有跨平台的开发需求，那么 Rust 会是个不错的选择。
+
+## 更多参考
+
+- [PingCAP - Talent Plan](https://github.com/pingcap/talent-plan) - PingCAP 的 Rust 学习资源
+- [Ferrous Teaching Material](https://github.com/ferrous-systems/teaching-material) - Rust 教学资源，非常全面
+- [棒棒彬的第二大脑-编程语言-Rust](https://binlogo.github.io/Knowledge-Track/programming-languages/rust/rust.html)
+
+附： 微软/Stack Overflow 尝试后对 Rust 的追捧热评
+- [2020/06/05 - Stack Overflow - Why the developers who use Rust love it so much](https://stackoverflow.blog/2020/06/05/why-the-developers-who-use-rust-love-it-so-much/)
+- [2020/06/02 - So What's Up with Microsoft's (and Everyone Else's) Love of Rust?](https://visualstudiomagazine.com/articles/2020/06/02/rust-love.aspx)
+- [2020/01/20 - Stack Overflow - What is Rust and why is it so popular?](https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/)
