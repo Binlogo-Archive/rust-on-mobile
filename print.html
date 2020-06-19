@@ -435,6 +435,86 @@ impl_times!(usize);
 <li><a href="https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/">2020/01/20 - Stack Overflow - What is Rust and why is it so popular?</a></li>
 </ul>
 <h1><a class="header" href="#针对移动跨平台的环境配置" id="针对移动跨平台的环境配置">针对移动跨平台的环境配置</a></h1>
+<h2><a class="header" href="#前置环境" id="前置环境">前置环境</a></h2>
+<ul>
+<li>Xcode</li>
+<li>对 Rust 友好的<a href="https://www.rust-lang.org/tools">文本编辑器</a>：VS Code/Sublime Text 3/Vim/Emacs/等</li>
+<li>命令行工具</li>
+</ul>
+<h2><a class="header" href="#rust-环境配置" id="rust-环境配置">Rust 环境配置</a></h2>
+<ol>
+<li>下载 <a href="https://www.rust-lang.org/tools/install">rustup</a></li>
+</ol>
+<pre><code class="language-sh">$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+</code></pre>
+<ol start="2">
+<li>添加针对 iOS 编译的目标环境</li>
+</ol>
+<pre><code class="language-sh">$ rustup target add aarch64-apple-ios armv7-apple-ios armv7s-apple-ios x86_64-apple-ios
+</code></pre>
+<ul>
+<li>aarch64-apple-ios (64 位 ARM iOS，真机， 必选)</li>
+<li>x86_64-apple-ios (64 位 x86 iOS, 模拟机，可选，推荐安装)</li>
+<li>armv7-apple-ios （ARMv7 iOS，较旧真机，可选）</li>
+<li>armv7s-apple-ios （ARMv7s iOS，较旧真机，可选）</li>
+<li>i386-apple-ios（32 位 x86 iOS，模拟机， 可选，不推荐安装）
+附：<a href="https://forge.rust-lang.org/release/platform-support.html">Rust 目标平台支持</a></li>
+</ul>
+<ol start="3">
+<li>安装 <code>cargo-lipo</code> 以便生成 iOS 通用库</li>
+</ol>
+<pre><code class="language-sh">$ cargo install cargo-lipo
+</code></pre>
+<h2><a class="header" href="#确认环境是否配置完成" id="确认环境是否配置完成">确认环境是否配置完成</a></h2>
+<pre><code class="language-sh">$ rustup show
+
+Default host: x86_64-apple-darwin
+rustup home:  /Users/WangXingbin/.rustup
+
+installed toolchains
+--------------------
+
+stable-x86_64-apple-darwin
+nightly-x86_64-apple-darwin (default)
+1.39.0-x86_64-apple-darwin
+1.41.0-x86_64-apple-darwin
+1.42.0-x86_64-apple-darwin
+
+installed targets for active toolchain
+--------------------------------------
+
+aarch64-apple-ios
+armv7-apple-ios
+armv7s-apple-ios
+i386-apple-ios
+x86_64-apple-darwin
+x86_64-apple-ios
+
+active toolchain
+----------------
+
+1.41.0-x86_64-apple-darwin
+rustc 1.41.0 (5e1a79984 2020-01-27)
+</code></pre>
+<pre><code class="language-sh">$ cargo lipo --version
+
+Due to a known rustc issue, cargo-lipo can only be run on macOS. See https://github.com/rust-lang/rust/issues/36156#issuecomment-373201676 for more info.
+cargo-lipo 2.0.0
+</code></pre>
+<h3><a class="header" href="#快速创建并运行一个-hello-world" id="快速创建并运行一个-hello-world">快速创建并运行一个 Hello, World</a></h3>
+<pre><code class="language-sh">$ cargo new hello &amp;&amp; cd hello
+    Created binary (application) `hello` package
+$ cargo run
+    Compiling hello v0.1.0 (/Users/WangXingbin/Desktop/rust_projects/hello)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.50s
+     Running `target/debug/hello`
+Hello, world!
+</code></pre>
+<p>Cargo 不仅是依赖管理工具，也是工作流工具，习惯 Cargo</p>
+<h2><a class="header" href="#更多参考-1" id="更多参考-1">更多参考</a></h2>
+<ul>
+<li><a href="https://www.rust-lang.org/tools/install">Install Rust</a></li>
+</ul>
 <h1><a class="header" href="#rustacean-的好朋友小螃蟹说" id="rustacean-的好朋友小螃蟹说">Rustacean 的好朋友小螃蟹说</a></h1>
 <h1><a class="header" href="#跨平台编译" id="跨平台编译">跨平台编译</a></h1>
 <h1><a class="header" href="#自动生成头文件" id="自动生成头文件">自动生成头文件</a></h1>
