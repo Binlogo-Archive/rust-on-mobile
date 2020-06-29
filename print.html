@@ -659,13 +659,33 @@ $ ./say_it
 <p>到此我们就顺利地创建了一个 Rust 编写的静态库，并可以通过 C 程序进行调用，熟悉了整个开发流程。</p>
 <p>接下来就看看<a href="./03-cross-compiling.html">如何跨多目标平台进行编译</a>吧。</p>
 <h1><a class="header" href="#跨平台编译" id="跨平台编译">跨平台编译</a></h1>
+<h2><a class="header" href="#前置条件" id="前置条件">前置条件</a></h2>
+<ul>
+<li>
+<p>已安装 <code>cargo-lipo</code> 以便生成 iOS 通用库</p>
+<pre><code class="language-sh">$ cargo install cargo-lipo
+</code></pre>
+</li>
+</ul>
 <h2><a class="header" href="#速览-1" id="速览-1">速览</a></h2>
 <ol>
 <li>编译<code>.a</code>静态库</li>
-<li>创建 Xcode 项目</li>
-<li></li>
+<li>自动生成<code>.h</code>头文件</li>
+<li>创建 Xcode 项目并集成运行</li>
 </ol>
 <h2><a class="header" href="#开始-1" id="开始-1">开始</a></h2>
+<h3><a class="header" href="#1-编译a静态库" id="1-编译a静态库">1. 编译<code>.a</code>静态库</a></h3>
+<pre><code class="language-sh">cargo lipo // 或者 cargo lipo --release
+</code></pre>
+<p>运行成功后，就可以在 <code>target/universal/{release|debug}/</code> 中找到生成的 <code>libferris_says_hi.a</code>静态库了。</p>
+<p>查看下静态库的架构，可以看到包含了<code>x86_64</code>和<code>arm64</code></p>
+<pre><code class="language-sh">$ lipo -info target/universal/debug/libferris_says_hi.a
+Architectures in the fat file: target/universal/debug/libferris_says_hi.a are: x86_64 arm64
+</code></pre>
+<blockquote>
+<p>cargo-lipo 命令做的就是将不同目标架构的生成包合成了，等价于<code>lipo -create</code></p>
+</blockquote>
+<h3><a class="header" href="#2-自动生成h头文件" id="2-自动生成h头文件">2. 自动生成<code>.h</code>头文件</a></h3>
 <h1><a class="header" href="#交互基本类型结构体与枚举" id="交互基本类型结构体与枚举">交互：基本类型、结构体与枚举</a></h1>
 <h1><a class="header" href="#交互字符串与内存管理" id="交互字符串与内存管理">交互：字符串与内存管理</a></h1>
 <h1><a class="header" href="#交互多线程与方法回调" id="交互多线程与方法回调">交互：多线程与方法回调</a></h1>
