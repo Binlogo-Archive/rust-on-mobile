@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Rustacean 的好朋友小螃蟹说 - Rust on Mobile - Rust 跨平台移动客户端开发实践</title>
+        <title>交互：多线程与方法回调 - Rust on Mobile - Rust 跨平台移动客户端开发实践</title>
         
         
 
@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="00-overview.html"><strong aria-hidden="true">1.</strong> Rust 概览</a></li><li class="chapter-item expanded "><a href="01-setup.html"><strong aria-hidden="true">2.</strong> 针对移动跨平台的环境配置</a></li><li class="chapter-item expanded "><a href="02-ferris-says-hi.html" class="active"><strong aria-hidden="true">3.</strong> Rustacean 的好朋友小螃蟹说</a></li><li class="chapter-item expanded "><a href="03-cross-compiling.html"><strong aria-hidden="true">4.</strong> 跨平台编译</a></li><li class="chapter-item expanded "><a href="04-primitives-structs-enums.html"><strong aria-hidden="true">5.</strong> 交互：基本类型、结构体与枚举</a></li><li class="chapter-item expanded "><a href="05-strings-memory.html"><strong aria-hidden="true">6.</strong> 交互：字符串与内存管理</a></li><li class="chapter-item expanded "><a href="06-threads-callbacks.html"><strong aria-hidden="true">7.</strong> 交互：多线程与方法回调</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="00-overview.html"><strong aria-hidden="true">1.</strong> Rust 概览</a></li><li class="chapter-item expanded "><a href="01-setup.html"><strong aria-hidden="true">2.</strong> 针对移动跨平台的环境配置</a></li><li class="chapter-item expanded "><a href="02-ferris-says-hi.html"><strong aria-hidden="true">3.</strong> Rustacean 的好朋友小螃蟹说</a></li><li class="chapter-item expanded "><a href="03-cross-compiling.html"><strong aria-hidden="true">4.</strong> 跨平台编译</a></li><li class="chapter-item expanded "><a href="04-primitives-structs-enums.html"><strong aria-hidden="true">5.</strong> 交互：基本类型、结构体与枚举</a></li><li class="chapter-item expanded "><a href="05-strings-memory.html"><strong aria-hidden="true">6.</strong> 交互：字符串与内存管理</a></li><li class="chapter-item expanded "><a href="06-threads-callbacks.html" class="active"><strong aria-hidden="true">7.</strong> 交互：多线程与方法回调</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -155,156 +155,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#rustacean-的好朋友小螃蟹说" id="rustacean-的好朋友小螃蟹说">Rustacean 的好朋友小螃蟹说</a></h1>
-<h2><a class="header" href="#速览" id="速览">速览</a></h2>
-<ol>
-<li>使用 Rust 创建一个静态库</li>
-<li>使用一个库并定义「小螃蟹说」方法</li>
-<li>创建 Rust 示例测试运行</li>
-<li>编写 Rust FFI 并创建 C 示例测试运行</li>
-</ol>
-<h2><a class="header" href="#开始" id="开始">开始</a></h2>
-<h3><a class="header" href="#1-创建小螃蟹说项目" id="1-创建小螃蟹说项目">1. 创建「小螃蟹说」项目</a></h3>
-<p>应用 Cargo 快速项目：</p>
-<pre><code class="language-sh">$ cargo new --lib ferris-says-hi &amp;&amp; cd ferris-says-hi
-
-     Created library `ferris-says-hi` package
-</code></pre>
-<p>项目文件目录：</p>
-<pre><code>.
-├── Cargo.toml
-└── src
-    └── lib.rs
-</code></pre>
-<p>打开 <code>Cargo.toml</code> 并编辑：</p>
-<pre><code class="language-coml">[package]
-name = &quot;ferris-says-hi&quot;
-version = &quot;0.1.0&quot;
-authors = [&quot;Wang Xingbin &lt;wangxingbin@didiglobal.com&gt;&quot;]
-edition = &quot;2018&quot;
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[lib]
-crate-type = [&quot;lib&quot;, &quot;staticlib&quot;] // ①
-
-[dependencies]
-ferris-says = &quot;0.2.0&quot; // ②
-</code></pre>
-<ol>
-<li>指定生成静态库</li>
-<li>添加依赖库：<code>ferris-says</code></li>
-</ol>
-<p>Tips: <code>cargo search ferris-says</code></p>
-<h3><a class="header" href="#2-编写定义小螃蟹说方法" id="2-编写定义小螃蟹说方法">2. 编写定义「小螃蟹说」方法</a></h3>
-<p>打开<code>src/lib.rs</code>并编辑：</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use ferris_says::say;
-use std::io::{stdout, BufWriter};
-
-pub fn ferris_says_hi() {
-  let hi = &quot;Hi，我是 Ferris，是 Rustacean 的好朋友，很高兴认识你~&quot;;
-  let stdout = stdout();
-  let mut writer = BufWriter::new(stdout.lock());
-  let _ = say(hi.as_bytes(), 50, &amp;mut writer);
-}
-<span class="boring">}
-</span></code></pre></pre>
-<h3><a class="header" href="#3-创建-rust-示例测试运行" id="3-创建-rust-示例测试运行">3. 创建 Rust 示例测试运行</a></h3>
-<pre><code class="language-sh">$ mkdir examples &amp;&amp; cd examples &amp;&amp; touch say_it.rs
-</code></pre>
-<p>打开 <code>examples/say_it.rs</code> 并编辑：</p>
-<pre><pre class="playground"><code class="language-rust">use ferris_says_hi::*;
-
-fn main() {
-  ferris_says_hi();
-}
-</code></pre></pre>
-<p>运行：</p>
-<pre><code class="language-sh">$ cargo run --example say_it
-    Finished dev [unoptimized + debuginfo] target(s) in 0.04s
-     Running `target/debug/examples/say_it`
- _______________________________
-/ Hi，我是 Ferris，是 Rustacean \
-\ 的好朋友，很高兴认识你~       /
- -------------------------------
-        \
-         \
-            _~^~^~_
-        \) /  o o  \ (/
-          '_   -   _'
-          / '-----' \
-</code></pre>
-<p>🎉 🎉 🎉 </p>
-<h3><a class="header" href="#4-支持-ffi-并创建-c-示例测试运行" id="4-支持-ffi-并创建-c-示例测试运行">4. 支持 FFI 并创建 C 示例测试运行</a></h3>
-<p>打开 <code>src/lib.rs</code> 编写 FFI 支持 C 语言调用</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>#[no_mangle] // ①
-pub unsafe extern &quot;C&quot; fn fs_ferris_says_hi() { // ②
-  ferris_says_hi();
-}
-<span class="boring">}
-</span></code></pre></pre>
-<ol>
-<li>
-<p>编译时不对方法名进行混淆</p>
-<ul>
-<li><code>0000000000000000 T __ZN14ferris_says_hi17fs_ferris_says_hi17hf6d1ae6d296b8207E</code> </li>
-<li><code>0000000000000000 T _fs_ferris_says_hi</code></li>
-</ul>
-</li>
-<li>
-<p>FFI 需要指定 <code>unsafe</code> 让编译器将安全保证交给开发者</p>
-</li>
-</ol>
-<p>创建 C 示例</p>
-<pre><code class="language-sh">$ touch say_it.c
-</code></pre>
-<p>打开 <code>say_it.c</code> 并编辑</p>
-<pre><code class="language-c">extern void fs_ferris_says_hi();
-
-int main(int argc, char *argv[])
-{
-  fs_ferris_says_hi();
-  return 0;
-}
-</code></pre>
-<p>编译链接并运行</p>
-<pre><code class="language-sh">$ cc say_it.c ../target/debug/libferris_says_hi.a -o say_it
-$ ./say_it
- _______________________________
-/ Hi，我是 Ferris，是 Rustacean \
-\ 的好朋友，很高兴认识你~       /
- -------------------------------
-        \
-         \
-            _~^~^~_
-        \) /  o o  \ (/
-          '_   -   _'
-          / '-----' \
-</code></pre>
-<p>🎉 🎉 🎉 🎉 🎉</p>
-<p>到此我们就顺利地创建了一个 Rust 编写的静态库，并可以通过 C 程序进行调用，熟悉了整个开发流程。</p>
-<p>接下来就看看<a href="./03-cross-compiling.html">如何跨多目标平台进行编译</a>吧。</p>
+                        <h1><a class="header" href="#交互多线程与方法回调" id="交互多线程与方法回调">交互：多线程与方法回调</a></h1>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="01-setup.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="05-strings-memory.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
-                        
-                            <a rel="next" href="03-cross-compiling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
 
                         <div style="clear: both"></div>
@@ -314,15 +176,11 @@ $ ./say_it
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="01-setup.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="05-strings-memory.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
-                
-                    <a rel="next" href="03-cross-compiling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                 
             </nav>
 

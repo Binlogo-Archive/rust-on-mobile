@@ -5,12 +5,19 @@
         <meta charset="UTF-8">
         <title>Rust 概览 - Rust on Mobile - Rust 跨平台移动客户端开发实践</title>
         
+        
+
+
+        <!-- Custom HTML head -->
+        
+
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
+        <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
         <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
@@ -19,8 +26,9 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
@@ -81,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="00-overview.html" class="active"><strong aria-hidden="true">1.</strong> Rust 概览</a></li><li class="chapter-item expanded "><a href="01-setup.html"><strong aria-hidden="true">2.</strong> 针对移动跨平台的环境配置</a></li><li class="chapter-item expanded "><a href="02-ferris-says-hi.html"><strong aria-hidden="true">3.</strong> Rustacean 的好朋友小螃蟹说</a></li><li class="chapter-item expanded "><a href="03-cross-compiling.html"><strong aria-hidden="true">4.</strong> 跨平台编译</a></li><li class="chapter-item expanded "><a href="04-generating-headers.html"><strong aria-hidden="true">5.</strong> 自动生成头文件</a></li><li class="chapter-item expanded "><a href="05-primitives-structs-enums.html"><strong aria-hidden="true">6.</strong> 交互：基本类型、结构体与枚举</a></li><li class="chapter-item expanded "><a href="06-strings-memory.html"><strong aria-hidden="true">7.</strong> 交互：字符串与内存管理</a></li><li class="chapter-item expanded "><a href="07-threads-callbacks.html"><strong aria-hidden="true">8.</strong> 交互：多线程与方法回调</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="00-overview.html" class="active"><strong aria-hidden="true">1.</strong> Rust 概览</a></li><li class="chapter-item expanded "><a href="01-setup.html"><strong aria-hidden="true">2.</strong> 针对移动跨平台的环境配置</a></li><li class="chapter-item expanded "><a href="02-ferris-says-hi.html"><strong aria-hidden="true">3.</strong> Rustacean 的好朋友小螃蟹说</a></li><li class="chapter-item expanded "><a href="03-cross-compiling.html"><strong aria-hidden="true">4.</strong> 跨平台编译</a></li><li class="chapter-item expanded "><a href="04-primitives-structs-enums.html"><strong aria-hidden="true">5.</strong> 交互：基本类型、结构体与枚举</a></li><li class="chapter-item expanded "><a href="05-strings-memory.html"><strong aria-hidden="true">6.</strong> 交互：字符串与内存管理</a></li><li class="chapter-item expanded "><a href="06-threads-callbacks.html"><strong aria-hidden="true">7.</strong> 交互：多线程与方法回调</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -152,8 +160,8 @@
 <p>通过<code>Show me the code</code>快速直观地认识下 Rust 代码</p>
 <p>Tips: <a href="https://play.rust-lang.org">Playground</a> &amp; <a href="https://github.com/rust-lang/mdBook">mdBook</a></p>
 <h3><a class="header" href="#hello-world" id="hello-world">Hello, World</a></h3>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn hello(name: Option&lt;&amp;str&gt;) {
     match name {
@@ -171,8 +179,8 @@ hello(Some(&quot;Binlogo&quot;));
 <li><code>Option</code> 枚举标识值的可空，编译器检查，避免运行时错误</li>
 </ul>
 <h3><a class="header" href="#翻转字符串" id="翻转字符串">翻转字符串</a></h3>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn reverse(input: &amp;str) -&gt; String {
     input.chars().filter(|c| !c.is_whitespace()).rev().collect()
@@ -186,8 +194,8 @@ println!(&quot;{}&quot;, reverse(&amp;s));
 <li>高阶函数支持</li>
 </ul>
 <h3><a class="header" href="#表示时间" id="表示时间">表示时间</a></h3>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use std::fmt;
 
@@ -248,8 +256,8 @@ fn test_add_across_midnight() {
 <ul>
 <li>
 <p><code>derive</code> 运用宏</p>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl&lt;T: PartialEq&gt; PartialEq for Clock {
   fn eq(&amp;self, other: &amp;Clock) -&gt; bool {
@@ -275,7 +283,7 @@ fn test_add_across_midnight() {
 </ul>
 <h3><a class="header" href="#tcp-的简单应用" id="tcp-的简单应用">TCP 的简单应用</a></h3>
 <p>Server:</p>
-<pre><pre class="playpen"><code class="language-rust">use std::io::{self, Read, Write};
+<pre><pre class="playground"><code class="language-rust">use std::io::{self, Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::thread;
 
@@ -307,7 +315,7 @@ fn handle_client(mut stream: TcpStream) -&gt; io::Result&lt;()&gt; {
 }
 </code></pre></pre>
 <p>Client</p>
-<pre><pre class="playpen"><code class="language-rust">use std::io::{self, prelude::*, BufReader};
+<pre><pre class="playground"><code class="language-rust">use std::io::{self, prelude::*, BufReader};
 use std::net::TcpStream;
 use std::str;
 
@@ -374,7 +382,7 @@ fn main() -&gt; io::Result&lt;()&gt; {
 <pre><code class="language-ruby">// Ruby
 6.times { put &quot;6&quot; }
 </code></pre>
-<pre><pre class="playpen"><code class="language-rust">// Rust
+<pre><pre class="playground"><code class="language-rust">// Rust
 fn main() {
     6.times(|_| println!(&quot;6&quot;));
 }
@@ -467,10 +475,10 @@ impl_times!(usize);
         
 
         
-        
+
         
         <script type="text/javascript">
-            window.playpen_copyable = true;
+            window.playground_copyable = true;
         </script>
         
 

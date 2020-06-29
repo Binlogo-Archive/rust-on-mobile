@@ -7,12 +7,19 @@
         
         <meta name="robots" content="noindex" />
         
+        
+
+
+        <!-- Custom HTML head -->
+        
+
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
+        <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
         <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
@@ -21,8 +28,9 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
@@ -83,7 +91,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="00-overview.html"><strong aria-hidden="true">1.</strong> Rust 概览</a></li><li class="chapter-item expanded "><a href="01-setup.html"><strong aria-hidden="true">2.</strong> 针对移动跨平台的环境配置</a></li><li class="chapter-item expanded "><a href="02-ferris-says-hi.html"><strong aria-hidden="true">3.</strong> Rustacean 的好朋友小螃蟹说</a></li><li class="chapter-item expanded "><a href="03-cross-compiling.html"><strong aria-hidden="true">4.</strong> 跨平台编译</a></li><li class="chapter-item expanded "><a href="04-generating-headers.html"><strong aria-hidden="true">5.</strong> 自动生成头文件</a></li><li class="chapter-item expanded "><a href="05-primitives-structs-enums.html"><strong aria-hidden="true">6.</strong> 交互：基本类型、结构体与枚举</a></li><li class="chapter-item expanded "><a href="06-strings-memory.html"><strong aria-hidden="true">7.</strong> 交互：字符串与内存管理</a></li><li class="chapter-item expanded "><a href="07-threads-callbacks.html"><strong aria-hidden="true">8.</strong> 交互：多线程与方法回调</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="00-overview.html"><strong aria-hidden="true">1.</strong> Rust 概览</a></li><li class="chapter-item expanded "><a href="01-setup.html"><strong aria-hidden="true">2.</strong> 针对移动跨平台的环境配置</a></li><li class="chapter-item expanded "><a href="02-ferris-says-hi.html"><strong aria-hidden="true">3.</strong> Rustacean 的好朋友小螃蟹说</a></li><li class="chapter-item expanded "><a href="03-cross-compiling.html"><strong aria-hidden="true">4.</strong> 跨平台编译</a></li><li class="chapter-item expanded "><a href="04-primitives-structs-enums.html"><strong aria-hidden="true">5.</strong> 交互：基本类型、结构体与枚举</a></li><li class="chapter-item expanded "><a href="05-strings-memory.html"><strong aria-hidden="true">6.</strong> 交互：字符串与内存管理</a></li><li class="chapter-item expanded "><a href="06-threads-callbacks.html"><strong aria-hidden="true">7.</strong> 交互：多线程与方法回调</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -154,8 +162,8 @@
 <p>通过<code>Show me the code</code>快速直观地认识下 Rust 代码</p>
 <p>Tips: <a href="https://play.rust-lang.org">Playground</a> &amp; <a href="https://github.com/rust-lang/mdBook">mdBook</a></p>
 <h3><a class="header" href="#hello-world" id="hello-world">Hello, World</a></h3>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn hello(name: Option&lt;&amp;str&gt;) {
     match name {
@@ -173,8 +181,8 @@ hello(Some(&quot;Binlogo&quot;));
 <li><code>Option</code> 枚举标识值的可空，编译器检查，避免运行时错误</li>
 </ul>
 <h3><a class="header" href="#翻转字符串" id="翻转字符串">翻转字符串</a></h3>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn reverse(input: &amp;str) -&gt; String {
     input.chars().filter(|c| !c.is_whitespace()).rev().collect()
@@ -188,8 +196,8 @@ println!(&quot;{}&quot;, reverse(&amp;s));
 <li>高阶函数支持</li>
 </ul>
 <h3><a class="header" href="#表示时间" id="表示时间">表示时间</a></h3>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use std::fmt;
 
@@ -250,8 +258,8 @@ fn test_add_across_midnight() {
 <ul>
 <li>
 <p><code>derive</code> 运用宏</p>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl&lt;T: PartialEq&gt; PartialEq for Clock {
   fn eq(&amp;self, other: &amp;Clock) -&gt; bool {
@@ -277,7 +285,7 @@ fn test_add_across_midnight() {
 </ul>
 <h3><a class="header" href="#tcp-的简单应用" id="tcp-的简单应用">TCP 的简单应用</a></h3>
 <p>Server:</p>
-<pre><pre class="playpen"><code class="language-rust">use std::io::{self, Read, Write};
+<pre><pre class="playground"><code class="language-rust">use std::io::{self, Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::thread;
 
@@ -309,7 +317,7 @@ fn handle_client(mut stream: TcpStream) -&gt; io::Result&lt;()&gt; {
 }
 </code></pre></pre>
 <p>Client</p>
-<pre><pre class="playpen"><code class="language-rust">use std::io::{self, prelude::*, BufReader};
+<pre><pre class="playground"><code class="language-rust">use std::io::{self, prelude::*, BufReader};
 use std::net::TcpStream;
 use std::str;
 
@@ -376,7 +384,7 @@ fn main() -&gt; io::Result&lt;()&gt; {
 <pre><code class="language-ruby">// Ruby
 6.times { put &quot;6&quot; }
 </code></pre>
-<pre><pre class="playpen"><code class="language-rust">// Rust
+<pre><pre class="playground"><code class="language-rust">// Rust
 fn main() {
     6.times(|_| println!(&quot;6&quot;));
 }
@@ -558,8 +566,8 @@ ferris-says = &quot;0.2.0&quot; // ②
 <p>Tips: <code>cargo search ferris-says</code></p>
 <h3><a class="header" href="#2-编写定义小螃蟹说方法" id="2-编写定义小螃蟹说方法">2. 编写定义「小螃蟹说」方法</a></h3>
 <p>打开<code>src/lib.rs</code>并编辑：</p>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use ferris_says::say;
 use std::io::{stdout, BufWriter};
@@ -576,7 +584,7 @@ pub fn ferris_says_hi() {
 <pre><code class="language-sh">$ mkdir examples &amp;&amp; cd examples &amp;&amp; touch say_it.rs
 </code></pre>
 <p>打开 <code>examples/say_it.rs</code> 并编辑：</p>
-<pre><pre class="playpen"><code class="language-rust">use ferris_says_hi::*;
+<pre><pre class="playground"><code class="language-rust">use ferris_says_hi::*;
 
 fn main() {
   ferris_says_hi();
@@ -600,8 +608,8 @@ fn main() {
 <p>🎉 🎉 🎉 </p>
 <h3><a class="header" href="#4-支持-ffi-并创建-c-示例测试运行" id="4-支持-ffi-并创建-c-示例测试运行">4. 支持 FFI 并创建 C 示例测试运行</a></h3>
 <p>打开 <code>src/lib.rs</code> 编写 FFI 支持 C 语言调用</p>
-<pre><pre class="playpen"><code class="language-rust">
-<span class="boring">#![allow(unused_variables)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[no_mangle] // ①
 pub unsafe extern &quot;C&quot; fn fs_ferris_says_hi() { // ②
@@ -651,7 +659,13 @@ $ ./say_it
 <p>到此我们就顺利地创建了一个 Rust 编写的静态库，并可以通过 C 程序进行调用，熟悉了整个开发流程。</p>
 <p>接下来就看看<a href="./03-cross-compiling.html">如何跨多目标平台进行编译</a>吧。</p>
 <h1><a class="header" href="#跨平台编译" id="跨平台编译">跨平台编译</a></h1>
-<h1><a class="header" href="#自动生成头文件" id="自动生成头文件">自动生成头文件</a></h1>
+<h2><a class="header" href="#速览-1" id="速览-1">速览</a></h2>
+<ol>
+<li>编译<code>.a</code>静态库</li>
+<li>创建 Xcode 项目</li>
+<li></li>
+</ol>
+<h2><a class="header" href="#开始-1" id="开始-1">开始</a></h2>
 <h1><a class="header" href="#交互基本类型结构体与枚举" id="交互基本类型结构体与枚举">交互：基本类型、结构体与枚举</a></h1>
 <h1><a class="header" href="#交互字符串与内存管理" id="交互字符串与内存管理">交互：字符串与内存管理</a></h1>
 <h1><a class="header" href="#交互多线程与方法回调" id="交互多线程与方法回调">交互：多线程与方法回调</a></h1>
@@ -682,10 +696,10 @@ $ ./say_it
         
 
         
-        
+
         
         <script type="text/javascript">
-            window.playpen_copyable = true;
+            window.playground_copyable = true;
         </script>
         
 
