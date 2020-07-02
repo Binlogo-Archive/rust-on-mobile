@@ -163,6 +163,11 @@
 <pre><code class="language-sh">$ cargo install cargo-lipo
 </code></pre>
 </li>
+<li>
+<p>已添加针对 iOS 的目标环境</p>
+<pre><code class="language-sh">$ rustup target add aarch64-apple-ios x86_64-apple-ios
+</code></pre>
+</li>
 </ul>
 <h2><a class="header" href="#速览" id="速览">速览</a></h2>
 <ol>
@@ -183,6 +188,57 @@ Architectures in the fat file: target/universal/debug/libferris_says_hi.a are: x
 <p>cargo-lipo 命令做的就是将不同目标架构的生成包合成了，等价于<code>lipo -create</code></p>
 </blockquote>
 <h3><a class="header" href="#2-自动生成h头文件" id="2-自动生成h头文件">2. 自动生成<code>.h</code>头文件</a></h3>
+<p>安装<code>cbindgen</code></p>
+<pre><code class="language-sh">cargo install --force cbindgen
+</code></pre>
+<p>生成<code>.h</code>头文件</p>
+<pre><code class="language-sh">cbindgen -l C -o header/ferris_says_hi.h
+</code></pre>
+<p>生成的<code>ferris_says_hi.h</code></p>
+<pre><code class="language-c">#include &lt;stdint.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+
+void fs_ferris_says_hi(void);
+</code></pre>
+<h3><a class="header" href="#3-创建-xcode-项目并集成运行" id="3-创建-xcode-项目并集成运行">3. 创建 Xcode 项目并集成运行</a></h3>
+<p>新建项目：略</p>
+<p>添加静态库依赖</p>
+<ol>
+<li>添加<code>target/universal/release/libferris_says_hi.a</code>到<code>Link Binary With Libraries</code></li>
+<li>添加<code>target/universal/release</code>（静态库所在目录）到<code>Library Search Paths</code></li>
+<li>添加<code>header/ferris_says_hi.h</code>到项目中，勾选<code>Copy item if need</code></li>
+</ol>
+<p>创建桥接文件并导入头文件</p>
+<blockquote>
+<p>Tips: 任意新建 C 文件，提示生成桥接文件，随后删除，可减少手动配置过程</p>
+</blockquote>
+<p>FerrisSaysHiApp-Bridging-Header.h</p>
+<pre><code class="language-c">#import &quot;ferris_says_hi.h&quot;
+</code></pre>
+<p>调用运行</p>
+<p>ViewController.swift</p>
+<pre><code class="language-swift">    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        fs_ferris_says_hi()
+    }
+</code></pre>
+<p>Xcode 控制台输出：</p>
+<pre><code> _______________________________
+/ Hi，我是 Ferris，是 Rustacean \
+\ 的好朋友，很高兴认识你~       /
+ -------------------------------
+        \
+         \
+            _~^~^~_
+        \) /  o o  \ (/
+          '_   -   _'
+          / '-----' \
+
+</code></pre>
+<p>🎉 🎉 🎉 🎉 🎉</p>
+<p>这样，Rust 的代码就顺利编译并运行到了iOS项目。可以留意到，目前只是一个无入参无出参的简单函数调用，接下来在此基础上，看看如何<a href="./04-primitives-structs-enums.html">进一步交互通信</a>。</p>
 
                     </main>
 
