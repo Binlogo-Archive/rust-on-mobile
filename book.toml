@@ -8,3 +8,6 @@ title = "Rust on Mobile - Rust 跨平台移动客户端开发实践"
 [output.html]
 default-theme = "light"
 preferred-dark-theme = "navy"
+google-analytics = "UA-160717450-2"
+git-repository-url = "https://github.com/Binlogo/rust-on-mobile"
+git-repository-icon = "fa-github"
